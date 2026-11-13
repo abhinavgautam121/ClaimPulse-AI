@@ -33,19 +33,19 @@ CMS data.json returned HTTP 403 from this environment; adapter remains opt-in an
 
 ## Phase review map
 
-| Phase | Principal files | Check and user verification |
-|---|---|---|
-| 1 Architecture | docs/architecture.md, manifests, project folders | Configuration parsing; inspect architecture diagram and modular directories |
-| 2 Database/seed | models/entities.py, migrations/versions, services/seed.py | Alembic + PostgreSQL constraints/views; inspect 20,000 seeded claims and payment/denial relationships |
-| 3 Auth/API | core/security.py, api/auth.py, app/main.py | Auth/role/CSRF tests; register, sign in/out and inspect /api/docs |
-| 4 Claims | schemas/claims.py, services/claims.py, api/claims.py, frontend/app/claims | Creation/transition/payment tests and Playwright full lifecycle |
-| 5 Analytics | analytics/metrics.py, api/analytics.py, frontend analytics components | Known-record formulas, dashboard/payer reconciliation; change dates and export |
-| 6 Risk/worklist | metrics risk_components/worklist, claim detail | Exact component fixture; assign, override priority, add note/action |
-| 7 ML | ml/engine.py, prediction page, notebooks | Chronological split/model metrics/inference tests; train and request a claim estimate |
-| 8 Real-time/ETL | ingestion, websocket/hub.py, services/simulator.py | CSV/webhook/simulator/WebSocket tests; start/pause/stop and download errors |
-| 9 Copilot | services/copilot.py, intelligence page | Six intents/evidence tests; ask an approved question and inspect supporting records |
-| 10 Release | Dockerfiles, compose files, tests, CI | 20 backend + 3 unit + 8 browser tests, TypeScript and production build; health checks |
-| 11 Documentation | README, docs, data, notebooks, screenshots | Repository inspection, nine screenshots, source ZIP and setup/deployment instructions |
+| Phase            | Principal files                                                           | Check and user verification                                                                           |
+| ---------------- | ------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| 1 Architecture   | docs/architecture.md, manifests, project folders                          | Configuration parsing; inspect architecture diagram and modular directories                           |
+| 2 Database/seed  | models/entities.py, migrations/versions, services/seed.py                 | Alembic + PostgreSQL constraints/views; inspect 20,000 seeded claims and payment/denial relationships |
+| 3 Auth/API       | core/security.py, api/auth.py, app/main.py                                | Auth/role/CSRF tests; register, sign in/out and inspect /api/docs                                     |
+| 4 Claims         | schemas/claims.py, services/claims.py, api/claims.py, frontend/app/claims | Creation/transition/payment tests and Playwright full lifecycle                                       |
+| 5 Analytics      | analytics/metrics.py, api/analytics.py, frontend analytics components     | Known-record formulas, dashboard/payer reconciliation; change dates and export                        |
+| 6 Risk/worklist  | metrics risk_components/worklist, claim detail                            | Exact component fixture; assign, override priority, add note/action                                   |
+| 7 ML             | ml/engine.py, prediction page, notebooks                                  | Chronological split/model metrics/inference tests; train and request a claim estimate                 |
+| 8 Real-time/ETL  | ingestion, websocket/hub.py, services/simulator.py                        | CSV/webhook/simulator/WebSocket tests; start/pause/stop and download errors                           |
+| 9 Copilot        | services/copilot.py, intelligence page                                    | Six intents/evidence tests; ask an approved question and inspect supporting records                   |
+| 10 Release       | Dockerfiles, compose files, tests, CI                                     | 20 backend + 3 unit + 8 browser tests, TypeScript and production build; health checks                 |
+| 11 Documentation | README, docs, data, notebooks, screenshots                                | Repository inspection, nine screenshots, source ZIP and setup/deployment instructions                 |
 
 Run commands are in docs/deployment.md; README and technical documents have been updated throughout the implementation. Repository commits separate setup, backend/data and the finished interface/release package.
 
@@ -63,3 +63,7 @@ Additional leakage guard: submission authorisation/documentation/eligibility inp
 - A fresh source checkout (without generated .next files) passed TypeScript checking.
 - Final source formatting used Black (including its AST equivalence check) and Prettier; no application behaviour changed after verification. Python syntax parsing and Git whitespace checks passed.
 - Final source package is available through Reports → Download source. It excludes .env, runtime model binaries, databases, dependency folders and Git internals.
+
+## Bundled dataset verification
+
+The repository includes the complete seed-42 snapshot: 20,000 claims and 13 supporting CSV tables in data/synthetic/claimpulse_seed_42.zip. A standard-library verification script checks SHA-256 hashes, exact counts, synthetic reference IDs, foreign keys, financial balances, payment reconciliation and successful denial/appeal/recovery histories. The 100-row preview and manifest are browsable in GitHub. Runtime accounts, credentials and test-created claims are excluded.

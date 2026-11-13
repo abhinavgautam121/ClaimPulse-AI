@@ -1,0 +1,43 @@
+{
+  "dataset": "ClaimPulse AI synthetic seed snapshot",
+  "seed": 42,
+  "synthetic_only": true,
+  "claim_count": 20000,
+  "reporting_currency": "USD",
+  "date_anchor": "2026-11-13",
+  "exported_at": "2026-11-13T14:54:51.585028+00:00",
+  "tables": {
+    "claims": 20000,
+    "claim_lines": 20000,
+    "denials": 2152,
+    "payments": 14255,
+    "appeals": 1085,
+    "underpayments": 1982,
+    "patients": 5000,
+    "providers": 10,
+    "payers": 8,
+    "procedures": 5,
+    "diagnoses": 5,
+    "data_sources": 1,
+    "claim_events": 20450
+  },
+  "sha256": {
+    "claims.csv": "47e398ef8a981bfe9956be9c8a2cfdea6e63a17100a65940a2b06399c8c4a537",
+    "claim_lines.csv": "00d43db686d170e16fdf31cbc7268701956cc1e987a31b78e15aa5f79bdfe9a4",
+    "denials.csv": "bf1aa9c55efb13cf49bc131fe8c794bb01ca596e4b40464db907a7117c1955b7",
+    "payments.csv": "3b9327ca043cb89e112392fe815098bd9949e462063a905bf6481c449a4a2aa5",
+    "appeals.csv": "3b05e7475778de856be73f9d302b78a99c6258569da1fb3ba041701cf52ca17b",
+    "underpayments.csv": "c882fc1727b19f6dd8dacac364d8e5ed75244346c52f18df158d0a17c4b76ede",
+    "patients.csv": "2dcbdf42a81f6129851eaf3eec278b4f58f1b59cef78158035be5024007fb1f4",
+    "providers.csv": "878d0dd91d237256581b0fa83cfa5a77d2279b5c6dcdf0b59d1bfe34e6bf05e5",
+    "payers.csv": "1c321241b7524c2b2b5911b47eb6a160d39c9293b60a7c5541726a7e61e6bd22",
+    "procedures.csv": "3abfbb6648e369d8a5dafa56588d32e0673a68afb76b7181e6afb5ca4e790de3",
+    "diagnoses.csv": "9f2ebedd0eab7b793e3dd8867ce44e9628e3c2ee7c9dde0f5a0e4262c256be4b",
+    "data_sources.csv": "051b9dfb26b0da826dfa257b5e43b0e39ced83d9f2a81d01f510db1232eb614c",
+    "claim_events.csv": "c1f21b8f0472775b78df2b9145d5af2b9d84969f9806b6670392e4f8abb8259e"
+  },
+  "scope": "Original 20,000 seeded claims and supporting synthetic reference/financial records. Demo-created claims, user accounts, passwords, notes and audit logs are excluded.",
+  "archive_file": "claimpulse_seed_42.zip",
+  "archive_sha256": "da40933f57d455cf94cb629610fb3dda2e97f2adfe643f5da701b5e966267cce",
+  "archive_bytes": 1497514
+}

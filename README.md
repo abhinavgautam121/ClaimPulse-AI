@@ -32,20 +32,20 @@ No unmeasured savings, approval improvement or recovered-revenue impact is claim
 
 ## 5. Key features
 
-| Workspace | Working behaviour |
-|---|---|
-| Executive dashboard | Eight database-derived KPIs, date ranges, previous-period comparisons, revenue/claim/denial charts, reasons and priorities |
-| Claims management | Search, payer/status/date/amount filters, sorting, pagination, creation, financial review edits, valid status transitions and CSV export |
-| Claim detail | Payments, denial/appeal history, rule components, assignment, manual priority, notes and follow-up actions |
-| Denial analysis | Pareto, frequency, denied expected reimbursement, trends and payer/provider/speciality drill-down |
-| Revenue risk | Five ageing buckets, outstanding balances, high-value priorities and deadline views |
-| Payer performance | Comparison filters, observed denial/reimbursement/recovery metrics and transparent scorecards |
-| Underpayments | Adjudicated reimbursement gaps under an explicit synthetic 72% contract assumption |
-| Prediction | Logistic Regression and Random Forest, chronological split, leakage safeguards, measured metrics and inference API |
-| Copilot | Six approved analytical intents, deterministic fallback, evidence tables, period and links |
-| Live monitor | Start/pause/stop simulator, event frequency/count, persisted lifecycle events and WebSockets |
-| Ingestion & quality | CSV, authenticated REST batches, signed webhook, opt-in synthetic FHIR polling, duplicates/rejections and error CSV |
-| Reporting & settings | Seven CSV report types, printable executive report, source ZIP, alert thresholds, read markers, dark appearance and audit history |
+| Workspace            | Working behaviour                                                                                                                        |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Executive dashboard  | Eight database-derived KPIs, date ranges, previous-period comparisons, revenue/claim/denial charts, reasons and priorities               |
+| Claims management    | Search, payer/status/date/amount filters, sorting, pagination, creation, financial review edits, valid status transitions and CSV export |
+| Claim detail         | Payments, denial/appeal history, rule components, assignment, manual priority, notes and follow-up actions                               |
+| Denial analysis      | Pareto, frequency, denied expected reimbursement, trends and payer/provider/speciality drill-down                                        |
+| Revenue risk         | Five ageing buckets, outstanding balances, high-value priorities and deadline views                                                      |
+| Payer performance    | Comparison filters, observed denial/reimbursement/recovery metrics and transparent scorecards                                            |
+| Underpayments        | Adjudicated reimbursement gaps under an explicit synthetic 72% contract assumption                                                       |
+| Prediction           | Logistic Regression and Random Forest, chronological split, leakage safeguards, measured metrics and inference API                       |
+| Copilot              | Six approved analytical intents, deterministic fallback, evidence tables, period and links                                               |
+| Live monitor         | Start/pause/stop simulator, event frequency/count, persisted lifecycle events and WebSockets                                             |
+| Ingestion & quality  | CSV, authenticated REST batches, signed webhook, opt-in synthetic FHIR polling, duplicates/rejections and error CSV                      |
+| Reporting & settings | Seven CSV report types, printable executive report, source ZIP, alert thresholds, read markers, dark appearance and audit history        |
 
 Required routes: `/login`, `/register`, `/dashboard`, `/claims`, `/claims/[id]`, `/denials`, `/revenue-risk`, `/claim-prioritisation`, `/payer-performance`, `/underpayments`, `/predictive-analytics`, `/copilot`, `/live-monitor`, `/data-ingestion`, `/data-quality`, `/reports`, `/settings`.
 
@@ -163,6 +163,8 @@ Synthetic records only, Argon2 password hashes, JWT HttpOnly cookies, logout rev
 No HIPAA claim is made. Production clinical use would require additional legal, security, organisational and contractual controls. See [limitations](docs/limitations.md) before interpreting this prototype as a deployable healthcare system.
 
 ## 20. Dataset sources
+
+The full **20,000-claim synthetic dataset** is included in [data/synthetic/claimpulse_seed_42.zip](data/synthetic/claimpulse_seed_42.zip), with 13 CSV tables covering claims, payments, denials, appeals, lifecycle events and reference data. See the [100-row preview](data/synthetic/claims_preview.csv), [manifest](data/synthetic/manifest.json) and [dataset instructions](data/synthetic/README.md). Run `python scripts/verify_synthetic_data.py` to verify checksums, relationships and balances.
 
 Built-in seed data is independently generated with seed 42, not a private claims dataset. Reference documentation: [CMS](https://data.cms.gov/), [CMS Provider Data Catalog](https://data.cms.gov/provider-data/), [Synthea](https://synthetichealth.github.io/synthea/), [NPPES](https://npiregistry.cms.hhs.gov/) and [FHIR R4](https://www.hl7.org/fhir/R4/claim.html). CMS returned HTTP 403 in this environment; the adapter reports the failure. NPPES organisation search was reachable. No external clinical credentials are required or configured.
 
