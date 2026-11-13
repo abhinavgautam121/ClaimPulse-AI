@@ -1,0 +1,82 @@
+name: claimpulse-ai
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-claimpulse}
+      POSTGRES_USER: ${POSTGRES_USER:-claimpulse}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Run python scripts/configure.py first}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 3s
+      retries: 15
+    restart: unless-stopped
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-claimpulse}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-claimpulse}
+      JWT_SECRET: ${JWT_SECRET:?Run python scripts/configure.py first}
+      DEMO_MODE: ${DEMO_MODE:-true}
+      SEED_COUNT: ${SEED_COUNT:-20000}
+      CORS_ORIGINS: ${CORS_ORIGINS:-["http://localhost:3000","http://127.0.0.1:3000"]}
+      COOKIE_SECURE: ${COOKIE_SECURE:-false}
+      WEBHOOK_SECRET: ${WEBHOOK_SECRET:-}
+      FHIR_BASE_URL: ${FHIR_BASE_URL:-}
+      FHIR_TOKEN: ${FHIR_TOKEN:-}
+      POLL_SECONDS: ${POLL_SECONDS:-300}
+      AI_PROVIDER: ${AI_PROVIDER:-deterministic}
+      AI_BASE_URL: ${AI_BASE_URL:-}
+      AI_API_KEY: ${AI_API_KEY:-}
+      AI_MODEL: ${AI_MODEL:-}
+      ARTIFACTS_DIR: /app/backend/artifacts
+    volumes:
+      - model_artifacts:/app/backend/artifacts
+    ports:
+      - "127.0.0.1:${BACKEND_PORT:-8000}:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health')",
+        ]
+      interval: 10s
+      timeout: 5s
+      start_period: 90s
+      retries: 10
+    restart: unless-stopped
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+      args:
+        API_INTERNAL_URL: http://backend:8000
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3000/login').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+volumes:
+  postgres_data:
+  model_artifacts:

@@ -1,0 +1,5 @@
+# Use only the db service from this overlay when running Python/Next.js directly.
+services:
+  db:
+    ports:
+      - "127.0.0.1:5432:5432"

@@ -1,0 +1,1 @@
+The executable generator is `backend/app/services/seed.py`. All generated records are synthetic, source-labelled and transactionally loaded. Configure `SEED_COUNT` before first boot; the default is 20,000 claims. Foreign keys and ledger coherence are verified in the backend test suite.

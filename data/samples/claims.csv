@@ -1,0 +1,6 @@
+id,patient_id,provider_id,payer_id,submission_date,service_date,amount,adjustment,status,synthetic
+SAMPLE-001,SYN-SAMPLE-001,1,1,2026-11-13,2026-11-11,700,196.0,Submitted,true
+SAMPLE-002,SYN-SAMPLE-002,2,2,2026-11-13,2026-11-11,900,252.0,Submitted,true
+SAMPLE-003,SYN-SAMPLE-003,3,3,2026-11-13,2026-11-11,1100,308.0,Submitted,true
+SAMPLE-004,SYN-SAMPLE-004,4,4,2026-11-13,2026-11-11,1300,364.0,Submitted,true
+SAMPLE-005,SYN-SAMPLE-005,5,5,2026-11-13,2026-11-11,1500,420.0,Submitted,true

@@ -1,0 +1,57 @@
+name: ClaimPulse verification
+on: [push, pull_request]
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Configure disposable synthetic database
+        run: |
+          python scripts/configure.py
+          docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d db --wait
+          python -m venv .venv
+          .venv/bin/pip install -r backend/requirements.txt
+      - name: Backend tests
+        run: cd backend && ../.venv/bin/pytest -q
+      - name: Frontend checks and production build
+        working-directory: frontend
+        run: |
+          npm ci
+          npm test
+          npm run typecheck
+          npm run build
+          npx playwright install --with-deps chromium
+      - name: Start synthetic application
+        run: |
+          cd backend
+          ../.venv/bin/alembic upgrade head
+          ../.venv/bin/python -m app.services.bootstrap
+          ../.venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8000 > /tmp/claimpulse-api.log 2>&1 &
+          cd ../frontend
+          npm run start > /tmp/claimpulse-web.log 2>&1 &
+          python - <<'PY'
+          import time,urllib.request
+          for attempt in range(30):
+              try:
+                  urllib.request.urlopen('http://127.0.0.1:3000/login',timeout=2)
+                  break
+              except Exception: time.sleep(1)
+          else: raise SystemExit('Frontend did not become ready')
+          PY
+      - name: Browser journeys
+        working-directory: frontend
+        run: npm run test:e2e
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: browser-results
+          path: frontend/test-results
