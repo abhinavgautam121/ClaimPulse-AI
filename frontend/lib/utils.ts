@@ -5,6 +5,7 @@ export const money = (v: number | string | undefined, compact = false) =>
   new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
+    minimumFractionDigits: 0,
     maximumFractionDigits: compact ? 1 : 0,
     ...(compact ? { notation: "compact" } : {}),
   }).format(Number(v) || 0);
